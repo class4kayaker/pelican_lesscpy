@@ -1,7 +1,9 @@
 Pelican LESSCPY
 ===============
 
-Plugin to generate minified CSS style sheets with integrity hashes for Pelican using LESSCPY.
+Plugin to generate minified CSS style sheets with integrity hashes for `Pelican
+<https://blog.getpelican.com/>`_ using `LESSCPY
+<https://pypi.org/project/lesscpy/>`_.
 
 Options
 -------
@@ -10,7 +12,7 @@ LESS_INTEGRITY
     List of hash algorithms to compute for the generated CSS Files
 
 VERSIONED_CSS
-    If true, then include a version string in the final filename for each CSS file based on the sha256 hash of the generated file
+    If true, then include a version query string in the final filename for each CSS file based on the sha256 hash of the generated file
 
 LESS_CSS_FILES
     Dictionary with key value pairs of the form
