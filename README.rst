@@ -25,13 +25,10 @@ Output
 generator.context['compiled_css']
     Dictionary of the form {name: {'css_file': versioned_filename, 'integrity': integrity_string}}
 
-    The final output is suitable for use in a Pelican template such as in the example below
-
-
-.. code:: html
-    {% for style, css_data in compiled_css.items() %}
-     <link rel="stylesheet"
-                  type="text/css"
-                  integrity="{{ css_data.integrity }}"
-                  href="{{ SITEURL }}/{{ css_data.css_file }}"/>
-    {% endfor %}
+    The final output is suitable for use in a Pelican template such as in the example below::
+        {% for style, css_data in compiled_css.items() %}
+         <link rel="stylesheet"
+                      type="text/css"
+                      integrity="{{ css_data.integrity }}"
+                      href="{{ SITEURL }}/{{ css_data.css_file }}"/>
+        {% endfor %}
