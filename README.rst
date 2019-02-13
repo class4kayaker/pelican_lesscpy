@@ -23,11 +23,11 @@ Output
 ------
 
 generator.context['compiled_css']
-    Dictionary of the form {name: {'css_file': versioned_filename, 'integrity': integrity_string}
+    Dictionary of the form {name: {'css_file': versioned_filename, 'integrity': integrity_string}}
 
     The final output is suitable for use in a Pelican template such as in the example below
 
-    .. code::
+    .. code:: html
         {% for style, css_data in compiled_css.items() %}
          <link rel="stylesheet"
                       type="text/css"
