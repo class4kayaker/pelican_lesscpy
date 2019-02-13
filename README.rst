@@ -27,7 +27,8 @@ generator.context['compiled_css']
 
     The final output is suitable for use in a Pelican template such as in the example below
 
-    .. code:: html
+
+.. code:: html
         {% for style, css_data in compiled_css.items() %}
          <link rel="stylesheet"
                       type="text/css"
