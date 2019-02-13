@@ -29,9 +29,9 @@ generator.context['compiled_css']
 
 
 .. code:: html
-        {% for style, css_data in compiled_css.items() %}
-         <link rel="stylesheet"
-                      type="text/css"
-                      integrity="{{ css_data.integrity }}"
-                      href="{{ SITEURL }}/{{ css_data.css_file }}"/>
-        {% endfor %}
+    {% for style, css_data in compiled_css.items() %}
+     <link rel="stylesheet"
+                  type="text/css"
+                  integrity="{{ css_data.integrity }}"
+                  href="{{ SITEURL }}/{{ css_data.css_file }}"/>
+    {% endfor %}
