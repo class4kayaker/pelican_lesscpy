@@ -6,7 +6,7 @@ import io
 import lesscpy
 import lesscpy.lessc.parser
 import lesscpy.lessc.formatter
-# from pelican.utils import sanitised_join # Does not exist yet
+from pelican.utils import sanitised_join
 
 import logging
 logger = logging.getLogger(__name__)
@@ -30,17 +30,6 @@ hash_funcs = {
 
 class JoinError(Exception):
     pass
-
-
-def sanitised_join(base_directory, *parts):
-    joined = os.path.abspath(os.path.join(base_directory, *parts))
-    if not joined.startswith(os.path.abspath(base_directory)):
-        raise JoinError(
-            "Attempted to break out of output directory to {}".format(
-                joined
-            )
-        )
-    return joined
 
 
 def compile_css_file(input_filepath, output_file):
