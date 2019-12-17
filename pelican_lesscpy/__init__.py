@@ -9,6 +9,7 @@ import lesscpy.lessc.formatter
 from pelican.utils import sanitised_join
 
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -23,8 +24,8 @@ class Opt(object):
 lesscpy_opt = Opt()
 
 hash_funcs = {
-    'sha256': hashlib.sha256,
-    'sha384': hashlib.sha384,
+    "sha256": hashlib.sha256,
+    "sha384": hashlib.sha384,
 }
 
 
@@ -60,26 +61,24 @@ def get_css_names(generator):
     and values are filepaths relative to the output root
     """
 
-    if 'LESS_CSS_FILES' not in generator.settings:
+    if "LESS_CSS_FILES" not in generator.settings:
         return
 
-    hashes = generator.settings.get('LESS_INTEGRITY', [])
-    versioned = generator.settings.get('VERSIONED_CSS', False)
+    hashes = generator.settings.get("LESS_INTEGRITY", [])
+    versioned = generator.settings.get("VERSIONED_CSS", False)
 
     compiled_files = {}
     logger.info("Filling environment with lesscpy output file names")
 
-    for key, value in generator.settings['LESS_CSS_FILES'].items():
+    for key, value in generator.settings["LESS_CSS_FILES"].items():
         input_rel, output_rel = value
         hash_vals = []
 
-        ver_string = ''
+        ver_string = ""
 
         logger.info(
-            "Generating data for css file key={key}: ({input_rel})"
-            .format(
-                key=key,
-                input_rel=input_rel
+            "Generating data for css file key={key}: ({input_rel})".format(
+                key=key, input_rel=input_rel
             )
         )
 
@@ -88,41 +87,37 @@ def get_css_names(generator):
                 input_path = sanitised_join(os.getcwd(), input_rel)
             except RuntimeError:
                 logger.error(
-                    "Skipping: file %r would be written outside output path",
-                    input_rel,
+                    "Skipping: file %r would be written outside output path", input_rel,
                 )
                 continue
             tmpio = io.StringIO()
             compile_css_file(input_path, tmpio)
 
         if versioned:
-            ver_string = '?'+hashlib.sha256(
-                tmpio.getvalue().encode('utf-8')
-            ).hexdigest()[:6]
+            ver_string = (
+                "?" + hashlib.sha256(tmpio.getvalue().encode("utf-8")).hexdigest()[:6]
+            )
 
         for h in hashes:
             if h not in hash_funcs:
-                logger.error(
-                    "Skipping generation of unknown hash %s",
-                    h
-                )
+                logger.error("Skipping generation of unknown hash %s", h)
                 continue
-            hash_vals.append("{h}-{dgst}".format(
-                h=h,
-                dgst=base64.b64encode(
-                    hash_funcs[h](
-                        tmpio.getvalue().encode('utf-8')
-                    ).digest()
-                ).decode()
-            ))
+            hash_vals.append(
+                "{h}-{dgst}".format(
+                    h=h,
+                    dgst=base64.b64encode(
+                        hash_funcs[h](tmpio.getvalue().encode("utf-8")).digest()
+                    ).decode(),
+                )
+            )
         tmpio.close()
 
         compiled_files[key] = {
-            'css_file': output_rel+ver_string,
-            'integrity': ' '.join(hash_vals),
+            "css_file": output_rel + ver_string,
+            "integrity": " ".join(hash_vals),
         }
 
-    generator.context['compiled_css'] = compiled_files
+    generator.context["compiled_css"] = compiled_files
 
 
 def compile_css_files(pelican_object):
@@ -138,25 +133,23 @@ def compile_css_files(pelican_object):
 
     logger.info("Generating css with lesscpy")
 
-    for key, value in pelican_object.settings['LESS_CSS_FILES'].items():
+    for key, value in pelican_object.settings["LESS_CSS_FILES"].items():
         input_rel, output_rel = value
-        logger.info("Generating %s from %s using lesscpy",
-                    output_rel, input_rel)
+        logger.info("Generating %s from %s using lesscpy", output_rel, input_rel)
         try:
             input_path = sanitised_join(os.getcwd(), input_rel)
         except JoinError:
             logger.error(
-                "Skipping: file %r would be read outside output path",
-                input_rel,
+                "Skipping: file %r would be read outside output path", input_rel,
             )
             continue
         try:
             output_path = sanitised_join(
-                pelican_object.settings['OUTPUT_PATH'], output_rel)
+                pelican_object.settings["OUTPUT_PATH"], output_rel
+            )
         except JoinError:
             logger.error(
-                "Skipping: file %r would be written outside output path",
-                output_rel,
+                "Skipping: file %r would be written outside output path", output_rel,
             )
             continue
         out_dir = os.path.dirname(output_path)
@@ -165,17 +158,15 @@ def compile_css_files(pelican_object):
                 os.makedirs(out_dir)
             except Exception:
                 logger.error(
-                    "Error creating containing directory %r",
-                    out_dir,
+                    "Error creating containing directory %r", out_dir,
                 )
                 raise
         try:
-            with open(output_path, 'w') as f:
+            with open(output_path, "w") as f:
                 compile_css_file(input_path, f)
         except Exception:
             logger.error(
-                "Error compiling %r as less file",
-                input_rel,
+                "Error compiling %r as less file", input_rel,
             )
             raise
 
